@@ -1,14 +1,26 @@
-import './App.css'
-import Navbar from './components/Navbar'
+import "./App.css";
+import CartPage from "./components/Cart/CartPage";
+import HomePage from "./components/Home/HomePage";
+import MyOrderPage from "./components/MyOrder/MyorderPage";
+import Navbar from "./components/Navbar/Navbar";
+import ProductsPage from "./components/Products/ProductsPage";
+import SingleProductPage from "./components/SingleProduct/SingleProductPage";
 
 function App() {
-
   return (
-    <div className='app'>
-      <nav><Navbar /></nav>
-      <main>라우팅</main>
+    <div className="app">
+      <nav>
+        <Navbar />
+      </nav>
+      <main>
+        {/* <HomePage /> */}
+        {/* <ProductsPage /> */}
+        {/* <SingleProductPage /> */}
+        {/* <CartPage /> */}
+        <MyOrderPage />
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
