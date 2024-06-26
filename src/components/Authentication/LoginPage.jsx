@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 const LoginPage = () => {
   const { register, handleSubmit } = useForm();
 
+  const submitData = (formData) => console.log(formData);
+
   return (
     <section className="align_center form_page">
-      <form className="authentication_form" onSubmit={handleSubmit((formData) => console.log(formData))}>
+      <form className="authentication_form" onSubmit={handleSubmit(submitData)}>
         <h2>로그인 폼</h2>
         <div className="form_inputs">
           <div>
