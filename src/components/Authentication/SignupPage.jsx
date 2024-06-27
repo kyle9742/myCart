@@ -55,7 +55,7 @@ const SignupPage = () => {
                 maxLength: { value: 10, message: "이름은 최대 10자 이하" },
               })}
             />
-            {errors.name && <em className="form_error">{errors.name.message}</em>}
+            {errors.name && (<em className="form_error">{errors.name.message}</em>)}
           </div>
 
           <div>
@@ -73,7 +73,7 @@ const SignupPage = () => {
                 },
               })}
             />
-            {errors.email && <em className="form_error">{errors.email.message}</em>}
+            {errors.email && (<em className="form_error">{errors.email.message}</em>)}
           </div>
 
           <div>
@@ -121,7 +121,7 @@ const SignupPage = () => {
                 minLength: { value: 10, message: "배송주소는 최소 10자 이상." },
               })}
             />
-            {errors.deliveryAddress && <em className="form_error">{errors.deliveryAddress.message}</em>}
+            {errors.deliveryAddress && (<em className="form_error">{errors.deliveryAddress.message}</em>)}
           </div>
         </div>
 

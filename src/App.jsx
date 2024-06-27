@@ -6,7 +6,6 @@ import { jwtDecode } from "jwt-decode";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     try {
@@ -18,9 +17,7 @@ function App() {
       } else {
         setUser(jwtUser);
       }
-    } catch (err) {
-      setFormError(err.response.data.message);
-    }
+    } catch (err) {}
   }, []);
 
   return (
