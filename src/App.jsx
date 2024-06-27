@@ -12,7 +12,13 @@ function App() {
     try {
       const jwt = localStorage.getItem("token");
       const jwtUser = jwtDecode(jwt);
-      setUser(jwtUser);
+      if (Date.now() >= jwtUser.exp * 1000) {
+        localStorage.removeItem("token");
+        location.reload();
+      } else {
+        setUser(jwtUser);
+      }
+
     } catch (err) {
       setFormError(err.response.data.message);
     }
