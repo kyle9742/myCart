@@ -5,11 +5,11 @@ import ProductCardSkeleton from "./ProductCardSkeleton";
 import { useSearchParams } from "react-router-dom";
 
 const ProductsList = () => {
-  const { data, error, isLoading } = useData("/products" );
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
   const [search, setSearch] = useSearchParams();
-  const category = search.get('category');
-
+  const category = search.get("category");
+  const { data, error, isLoading } = useData("/products", { params: { category } }, [category]);
+  
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
@@ -24,10 +24,9 @@ const ProductsList = () => {
       </header>
 
       <div className="products_list">
-        {setSearch}
         {error && <em className="form_error">{error}</em>}
-        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
-        {data.products && data.products.map((product) => <ProductCard key={product._id} id={product._id} image={product.images[0]} price={product.price} title={product.title} rating={product.rating} ratingCounts={product.reviews.counts} stock={product.stock} />)}
+        {isLoading && skeletons.map((n) => (<ProductCardSkeleton key={n} />))}
+        {data.products && data.products.map((product) => (<ProductCard key={product._id} id={product._id} image={product.images[0]} price={product.price} title={product.title} rating={product.rating} ratingCounts={product.reviews.counts} stock={product.stock} />))}
       </div>
     </section>
   );

@@ -3,7 +3,7 @@ import './LinkWithIcon.css';
 
 const LinkWithIcon = ({ title, link, emoji }) => {
 	return (
-		<NavLink to={link} href={link} className='align_center'>
+		<NavLink to={link} className='align_center'>
 			{title} <img src={emoji} alt='' className='link_emoji' />
 		</NavLink>
 	);

@@ -1,6 +1,7 @@
-import FeaturedProducts from './FeaturedProducts';
+
 import './HeroSection.css';
 
+// eslint-disable-next-line react/prop-types
 const HeroSection = ({title, subtitle, link, image}) => {
 	return (
         <section className="hero_section">
