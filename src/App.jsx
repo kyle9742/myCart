@@ -9,7 +9,14 @@ function App() {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product, quantity) => {
-    setCart([...cart, { product, quantity }]);
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex((item) => item.product._id === product._id);
+    if (productIndex === -1) {
+      updatedCart.push({ product: product, quantity: quantity });
+    } else {
+      updatedCart[productIndex].quantity += quantity;
+    }
+    setCart(updatedCart);
   };
 
   useEffect(() => {
