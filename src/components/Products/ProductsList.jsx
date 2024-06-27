@@ -1,19 +1,14 @@
 import "./ProductsList.css";
 import ProductCard from "./ProductCard";
-import { useState } from "react";
-import { useEffect } from "react";
-import apiClient from "../../utils/api-client";
+import useData from "../../Hook/useData";
+import ProductCardSkeleton from "./ProductCardSkeleton";
+import { useSearchParams } from "react-router-dom";
 
 const ProductsList = () => {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    apiClient
-      .get("/products")
-      .then((res) => setProducts(res.data.products))
-      .catch((err) => setError(err));
-  }, []);
+  const { data, error, isLoading } = useData("/products" );
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
+  const [search, setSearch] = useSearchParams();
+  const category = search.get('category');
 
   return (
     <section className="products_list_section">
@@ -29,10 +24,10 @@ const ProductsList = () => {
       </header>
 
       <div className="products_list">
+        {setSearch}
         {error && <em className="form_error">{error}</em>}
-        {products.map((product) => (
-          <ProductCard key={product._id} id={product._id} title={product.title} image={product.images[0]} price={product.price} rating={product.rating} ratingCounts={product.reviews.counts} stock={product.stock} />
-        ))}
+        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
+        {data.products && data.products.map((product) => <ProductCard key={product._id} id={product._id} image={product.images[0]} price={product.price} title={product.title} rating={product.rating} ratingCounts={product.reviews.counts} stock={product.stock} />)}
       </div>
     </section>
   );
