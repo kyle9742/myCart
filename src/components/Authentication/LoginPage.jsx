@@ -1,14 +1,24 @@
+import { useState } from "react";
 import "./LoginPage.css";
 import { useForm } from "react-hook-form";
+import { login } from "../../services/userServices";
 
 const LoginPage = () => {
+  const [formError, setFormError] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const submitData = (formData) => console.log(formData);
+  const submitData = async (formData) => {
+    try {
+      await login(formData);
+    } catch (err) {
+      setFormError(err.response.data.message);
+    }
+  };
 
   return (
     <section className="align_center form_page">
@@ -34,6 +44,7 @@ const LoginPage = () => {
             />
             {errors.password && <em className="form_error">{errors.password.message}</em>}
           </div>
+          {formError && <em className="form_error">{formError}</em>}
           <button type="submit" className="search_button form_submit">
             Submit
           </button>

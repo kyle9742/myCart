@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import "./SignupPage.css";
 import user from "../../assets/user.webp";
 import { useState } from "react";
+import { signup } from "../../services/userServices";
 
 const SignupPage = () => {
   const [profilePic, setProfilePic] = useState(null);
-  console.log(profilePic);
+  const [formError, setFormError] = useState("");
 
   const {
     register,
@@ -15,9 +16,13 @@ const SignupPage = () => {
     watch,
   } = useForm();
 
-  const submitData = (formData) => console.log(formData);
-
-  console.log(profilePic);
+  const submitData = async (formData) => {
+    try {
+      await signup(formData, profilePic);
+    } catch (err){
+      setFormError(err.response.data.message);
+    }
+  };
 
   return (
     <section className="align_center form_page">
@@ -119,6 +124,7 @@ const SignupPage = () => {
           </div>
         </div>
 
+        {formError && <em className="form_error">{formError}</em>}
         <button className="search_button form_submit" type="submit">
           Submit
         </button>
