@@ -4,7 +4,7 @@ import apiClient from "../utils/api-client";
 const useData = (url, customConfig, deps) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
-  const [isLocading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -14,7 +14,7 @@ const useData = (url, customConfig, deps) => {
       .catch((err) => {setError(err.message); setIsLoading(false);});
   }, deps ? deps : []);
 
-  return { data, error, isLocading };
+  return { data, error, isLoading };
 };
 
 export default useData;
