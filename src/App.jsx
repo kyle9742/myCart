@@ -18,7 +18,6 @@ function App() {
       } else {
         setUser(jwtUser);
       }
-
     } catch (err) {
       setFormError(err.response.data.message);
     }
@@ -26,7 +25,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar />
+      <Navbar user={user} />
       <main>
         <Routing />
       </main>
