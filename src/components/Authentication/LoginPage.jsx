@@ -44,7 +44,9 @@ const LoginPage = () => {
             />
             {errors.password && <em className="form_error">{errors.password.message}</em>}
           </div>
+
           {formError && <em className="form_error">{formError}</em>}
+
           <button type="submit" className="search_button form_submit">
             Submit
           </button>
