@@ -9,16 +9,15 @@ const ProductsList = () => {
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
   const [search, setSearch] = useSearchParams();
   const category = search.get("category");
-  const page = search.get('page');
-  
+  const page = search.get("page");
+
   const handlePageChange = (page) => {
     const currentParams = Object.fromEntries([...search]);
-    setSearch({...currentParams, page: page});
-  }
-  
+    setSearch({ ...currentParams, page: page });
+  };
+
   const { data, error, isLoading } = useData("/products", { params: { category, page } }, [category, page]);
-  
-  
+
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
@@ -34,15 +33,9 @@ const ProductsList = () => {
 
       <div className="products_list">
         {error && <em className="form_error">{error}</em>}
-        {isLoading && skeletons.map((n) => (<ProductCardSkeleton key={n} />))}
-        {data.products && data.products.map((product) => (<ProductCard key={product._id} id={product._id} image={product.images[0]} price={product.price} title={product.title} rating={product.rating} ratingCounts={product.reviews.counts} stock={product.stock} />))}
-        {data && (
-					<Pagination
-						total={data.totalProducts}
-						perPage={8}
-						onClick={handlePageChange}
-						currentPage={page}
-					/>)}
+        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
+        {data.products && data.products.map((product) => <ProductCard key={product._id} product={product} />)}
+        {data && <Pagination total={data.totalProducts} perPage={8} onClick={handlePageChange} currentPage={page} />}
       </div>
     </section>
   );

@@ -4,9 +4,11 @@ import Navbar from "./components/Navbar/Navbar";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { addToCartAPI, getCartAPI } from "./services/cartServices";
+import { addToCartAPI, decreaseProductAPI, getCartAPI, increaseProductAPI, removeFromCartAPI } from "./services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "./contexts/UserContext";
+import CartContext from "./contexts/CartContext";
 
 setAuthToken(localStorage.getItem("token"));
 
@@ -33,8 +35,36 @@ function App() {
       });
   };
 
-  useEffect(() => {
+  const removeFromCart = (id) => {
+		const oldCart = [...cart];
+		const newCart = oldCart.filter((item) => item.product._id !== id);
+		setCart(newCart);
+    removeFromCartAPI(id).catch((err) => {
+			toast.error('장바구니 상품 삭제 에러');
+		});
+	};
 
+  const updateCart = (type, id) => {
+		const updatedCart = [...cart];
+		const productIndex = updatedCart.findIndex((item) => item.product._id === id);
+
+		if (type === 'increase') {
+			updatedCart[productIndex].quantity += 1;
+			setCart(updatedCart);
+      increaseProductAPI(id).catch((err) => {
+				toast.error('상품 증가 에러');
+			});
+		}
+		if (type === 'decrease') {
+			updatedCart[productIndex].quantity -= 1;
+			setCart(updatedCart);
+      decreaseProductAPI(id).catch((err) => {
+				toast.error('상품 감소 에러');
+			});
+		}
+	};
+
+  useEffect(() => {
     try {
       const jwt = localStorage.getItem("token");
       const jwtUser = jwtDecode(jwt);
@@ -45,7 +75,6 @@ function App() {
         setUser(jwtUser);
       }
     } catch (err) {}
-
   }, []);
 
   const getCart = () => {
@@ -54,22 +83,26 @@ function App() {
         setCart(res.data);
       })
       .catch((err) => {
-        toast.error('카트 가져오기에 실패했습니다.');
+        toast.error("카트 가져오기에 실패했습니다.");
       });
   };
 
   useEffect(() => {
     getCart();
-  },[user])
+  }, [user]);
 
   return (
-    <div className="app">
-      <Navbar user={user} cartCount={cart.length} />
-      <main>
-        <ToastContainer position="bottom-right" />
-        <Routing addToCart={addToCart} cart={cart} />
-      </main>
-    </div>
+    <UserContext.Provider value={user}>
+      <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart  }}>
+        <div className="app">
+          <Navbar user={user} cartCount={cart.length} />
+          <main>
+            <ToastContainer position="bottom-right" />
+            <Routing />
+          </main>
+        </div>
+      </CartContext.Provider>
+    </UserContext.Provider>
   );
 }
 
