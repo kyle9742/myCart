@@ -10,13 +10,14 @@ const ProductsList = () => {
   const [search, setSearch] = useSearchParams();
   const category = search.get("category");
   const page = search.get("page");
+  const searchQuery = search.get("search");
 
   const handlePageChange = (page) => {
     const currentParams = Object.fromEntries([...search]);
     setSearch({ ...currentParams, page: page });
   };
 
-  const { data, error, isLoading } = useData("/products", { params: { category, page } }, [category, page]);
+  const { data, error, isLoading } = useData("products", { params: { search: searchQuery, category, page } }, [category, page, searchQuery]);
 
   return (
     <section className="products_list_section">

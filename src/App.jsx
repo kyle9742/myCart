@@ -36,33 +36,33 @@ function App() {
   };
 
   const removeFromCart = (id) => {
-		const oldCart = [...cart];
-		const newCart = oldCart.filter((item) => item.product._id !== id);
-		setCart(newCart);
+    const oldCart = [...cart];
+    const newCart = oldCart.filter((item) => item.product._id !== id);
+    setCart(newCart);
     removeFromCartAPI(id).catch((err) => {
-			toast.error('장바구니 상품 삭제 에러');
-		});
-	};
+      toast.error("장바구니 상품 삭제 에러");
+    });
+  };
 
   const updateCart = (type, id) => {
-		const updatedCart = [...cart];
-		const productIndex = updatedCart.findIndex((item) => item.product._id === id);
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex((item) => item.product._id === id);
 
-		if (type === 'increase') {
-			updatedCart[productIndex].quantity += 1;
-			setCart(updatedCart);
+    if (type === "increase") {
+      updatedCart[productIndex].quantity += 1;
+      setCart(updatedCart);
       increaseProductAPI(id).catch((err) => {
-				toast.error('상품 증가 에러');
-			});
-		}
-		if (type === 'decrease') {
-			updatedCart[productIndex].quantity -= 1;
-			setCart(updatedCart);
+        toast.error("상품 증가 에러");
+      });
+    }
+    if (type === "decrease") {
+      updatedCart[productIndex].quantity -= 1;
+      setCart(updatedCart);
       decreaseProductAPI(id).catch((err) => {
-				toast.error('상품 감소 에러');
-			});
-		}
-	};
+        toast.error("상품 감소 에러");
+      });
+    }
+  };
 
   useEffect(() => {
     try {
@@ -88,7 +88,9 @@ function App() {
   };
 
   useEffect(() => {
-    getCart();
+    if (user) {
+      getCart();
+    }
   }, [user]);
 
   return (
