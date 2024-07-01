@@ -1,19 +1,31 @@
 import "./CartPage.css";
 import remove from "../../assets/remove.png";
-import user from "../../assets/user.webp";
 import Table from "../Common/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
 import { useContext, useState } from "react";
 import { useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
+import { checkoutAPI } from "../../services/orderServices";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
   const userObj = useContext(UserContext);
-  const { cart, removeFromCart, updateCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
 
-  console.log(userObj);
+  const checkout = () => {
+		const oldCart = [...cart];
+		setCart([]); //카트 비우기
+		checkoutAPI()
+			.then(() => {
+				toast.success('주문 성공!');
+			})
+			.catch(() => {
+				toast.error('checkout 중 에러발생.');
+				setCart(oldCart);
+			});
+	};
 
   useEffect(() => {
     let total = 0;
@@ -68,7 +80,7 @@ const CartPage = () => {
         </tbody>
       </table>
 
-      <button className="search_button checkout_button">결재하기</button>
+      <button onClick={checkout} className="search_button checkout_button">결재하기</button>
     </section>
   );
 };
